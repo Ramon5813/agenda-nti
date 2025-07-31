@@ -1,128 +1,131 @@
-/* EXISTENTES (sem alteração até aqui) */
+/* ESTILOS GERAIS */
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
   background: #0e101c;
   color: #f0f0f0;
 }
+
 header {
   background: #1f2233;
   padding: 1rem;
   text-align: center;
   border-bottom: 2px solid #4caf50;
 }
+
 h1 {
   margin: 0;
   font-size: 1.8rem;
-  color: #4caf50;
 }
+
 main {
+  padding: 2rem;
+}
+
+/* FORMULÁRIO DE NOVA TAREFA */
+form, .task-form {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: #1a1c2d;
   padding: 1rem;
-  gap: 2rem;
-}
-.task-form {
-  background: #1b1e2e;
-  padding: 1rem;
-  border-radius: 12px;
-}
-.task-form input,
-.task-form textarea {
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: none;
-  width: 100%;
-  resize: vertical;
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 1rem;
-  line-height: 1.4;
-  background-color: white;
-  color: black;
-}
-.task-form select,
-.task-form button {
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: none;
-  width: 100%;
-}
-.task-form button {
-  background-color: #4caf50;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-.calendar {
-  background: #1b1e2e;
-  padding: 1rem;
-  border-radius: 12px;
-}
-.calendar-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.week {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-.day {
-  flex: 1;
-  background: #262a3c;
   border-radius: 8px;
-  padding: 0.5rem;
 }
+
+input, select, button, textarea {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+input, select, textarea {
+  background: #2a2d3e;
+  color: #f0f0f0;
+  flex: 1;
+  min-width: 150px;
+  resize: vertical;
+}
+
+button {
+  background: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+  flex-shrink: 0;
+  min-width: 100px;
+}
+
+button:hover {
+  background: #43a047;
+}
+
+/* CONTAINER DE DIAS */
+#calendarWeek {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+/* CADA DIA */
+.day {
+  background: #1f2233;
+  border: 1px solid #333;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
 .day h3 {
   margin-top: 0;
-  font-size: 1rem;
-  border-bottom: 1px solid #555;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #4caf50;
+  padding-bottom: 0.5rem;
 }
+
+/* TAREFA */
 .task {
-  background: #333;
-  padding: 0.4rem;
-  margin: 0.3rem 0;
-  border-radius: 5px;
-  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
-.task input {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 0.9rem;
-  width: 100%;
+
+/* CORES POR STATUS */
+.task.feito {
+  background-color: #2e7d32;
 }
-.task select {
-  background: transparent;
-  color: white;
-  border: 1px solid #555;
-  border-radius: 4px;
+
+.task.parado {
+  background-color: #c62828;
 }
-.task .remove {
-  background: #ff5555;
+
+.task.em-andamento {
+  background-color: #1565c0;
+}
+
+/* BOTÕES DAS TAREFAS */
+.task button {
+  background-color: #ff5555;
   color: white;
   border: none;
-  padding: 2px 6px;
+  padding: 4px 6px;
   cursor: pointer;
   border-radius: 4px;
   font-size: 0.8rem;
+  margin-left: 0.5rem;
+  transition: background 0.2s;
 }
-.task[data-status="Feito"] {
-  background-color: #2e7d32;
+
+.task button:hover {
+  background-color: #d32f2f;
 }
-.task[data-status="Parado"] {
-  background-color: #c62828;
-}
-.task[data-status="Em andamento"] {
-  background-color: #1565c0;
-}
+
+/* BOTÃO TOGGLE DE MOSTRAR MAIS */
 .task .toggle {
   background: #4caf50;
   color: white;
@@ -132,38 +135,40 @@ main {
   border-radius: 4px;
   font-size: 0.8rem;
   transition: background 0.2s;
+  margin-left: 0;
 }
+
 .task .toggle:hover {
   background: #388e3c;
 }
 
-/* Botão para apagar descrição individual */
-.task .delete-desc {
-  background: #d32f2f;
-  color: white;
-  border: none;
-  padding: 2px 8px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 0.8rem;
-}
-
-/* Contador de caracteres */
-.task .char-count {
+/* CONTADOR DE CARACTERES */
+.char-count {
   font-size: 0.7rem;
   color: #ccc;
   text-align: right;
   margin-top: -0.3rem;
 }
 
-/* Responsividade básica */
+/* RESPONSIVO */
 @media (max-width: 600px) {
-  .calendar-nav {
+  form, .task-form {
     flex-direction: column;
-    gap: 0.5rem;
   }
 
-  .week {
-    flex-direction: column;
+  #calendarWeek {
+    grid-template-columns: 1fr;
   }
+}
+.task select {
+  min-width: auto;      /* remove largura mínima */
+  width: auto;          /* largura automática */
+  max-width: 120px;     /* largura máxima para não ficar muito grande */
+  padding: 4px 8px;     /* padding menor para ficar compacto */
+  font-size: 0.9rem;    /* tamanho da fonte um pouco menor */
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: #2a2d3e;
+  color: #f0f0f0;
+  cursor: pointer;
 }
