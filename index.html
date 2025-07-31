@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agenda - NTI Ramon Sesc Mogi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Agenda - NTI Ramon Sesc Mogi</h1>
+  </header>
+
+  <main>
+    <section class="task-form">
+      <h2>Nova Ação</h2>
+<textarea id="taskDesc" placeholder="Descreva a ação..." rows="2"></textarea>
+      <select id="taskStatus">
+        <option value="Em andamento">Em andamento</option>
+        <option value="Feito">Feito</option>
+        <option value="Parado">Parado</option>
+      </select>
+      <input type="date" id="taskDate" />
+      <button onclick="addTask()">Adicionar</button>
+    </section>
+
+    <section class="calendar">
+      <h2>Calendário Semanal</h2>
+      <div class="calendar-nav">
+        <button onclick="changeWeek(-1)">← Semana anterior</button>
+        <span id="weekRange"></span>
+        <button onclick="changeWeek(1)">Próxima semana →</button>
+      </div>
+      <div class="week" id="calendarWeek"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
