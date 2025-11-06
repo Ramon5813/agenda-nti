@@ -2,37 +2,152 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Agenda - NTI Ramon Sesc Mogi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌌 Júpiter 3.2.1 — Painel NTI Ramon Sesc Mogi</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>Agenda - NTI Ramon Sesc Mogi</h1>
+    <div class="wrap">
+      <h1>🌌 Júpiter 3.2.1 — Painel NTI Ramon Sesc Mogi</h1>
+      <div class="toolbar">
+        <button class="btn" id="btnNew">➕ Nova ação</button>
+        <button class="btn" id="btnResetFixed">♻️ Reiniciar checklist</button>
+        <button class="btn" id="btnExport">🧾 Exportar (PDF/Imprimir)</button>
+        <button class="btn ghost" id="btnCSV">📤 Exportar CSV</button>
+        <button class="btn ghost" id="btnBackup">💾 Backup</button>
+        <button class="btn ghost" id="btnImport">📂 Importar</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" />
+        <button class="btn ghost" id="btnOverdue">🔔 Destacar atrasadas: ON</button>
+        <button class="btn ghost" id="btnTheme">🌗 Tema</button>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <section class="task-form">
-      <h2>Nova Ação</h2>
-<textarea id="taskDesc" placeholder="Descreva a ação..." rows="2"></textarea>
-      <select id="taskStatus">
-        <option value="Em andamento">Em andamento</option>
-        <option value="Feito">Feito</option>
-        <option value="Parado">Parado</option>
-      </select>
-      <input type="date" id="taskDate" />
-      <button onclick="addTask()">Adicionar</button>
+  <main class="wrap">
+
+    <!-- 📊 MINI DASHBOARD -->
+    <section id="dashboard">
+      <div class="dash-grid">
+        <div class="card">
+          <div class="kpi" id="kpiTotal">0</div>
+          <div class="kpi-label">Tarefas na semana</div>
+        </div>
+        <div class="card">
+          <div class="kpi" id="kpiDone">0</div>
+          <div class="kpi-label">Concluídas</div>
+        </div>
+        <div class="card">
+          <div class="kpi" id="kpiPend">0</div>
+          <div class="kpi-label">Pendentes</div>
+        </div>
+        <div class="card">
+          <div class="kpi" id="kpiPct">0%</div>
+          <div class="kpi-label">% conclusão</div>
+        </div>
+        <div class="card">
+          <div class="kpi" id="kpiCalls">0</div>
+          <div class="kpi-label">Chamados abertos</div>
+        </div>
+      </div>
+      <div class="dash-range pill" id="dashRange">—</div>
     </section>
 
-    <section class="calendar">
-      <h2>Calendário Semanal</h2>
-      <div class="calendar-nav">
-        <button onclick="changeWeek(-1)">← Semana anterior</button>
-        <span id="weekRange"></span>
-        <button onclick="changeWeek(1)">Próxima semana →</button>
+    <!-- 🧠 CHECKLIST FIXO -->
+    <section id="fixed">
+      <h2>🧠 Checklist de Abertura da UO</h2>
+
+      <div id="fixedProgressWrapper"><div id="fixedProgress"></div></div>
+      <div id="fixedPercent">0% concluído</div>
+
+      <div class="actions" style="margin:6px 0 12px;">
+        <button class="btn ghost" onclick="markAllFixed(true)">✔️ Marcar tudo</button>
+        <button class="btn ghost" onclick="markAllFixed(false)">❌ Desmarcar tudo</button>
       </div>
-      <div class="week" id="calendarWeek"></div>
+
+      <div id="fixedContainer"></div>
+      <div class="actions" style="margin-top:10px">
+        <span class="pill">✅ Progresso salvo automaticamente</span>
+      </div>
     </section>
+
+    <!-- 📆 CALENDÁRIO + TAREFAS -->
+    <section class="calendar">
+      <h2>📆 Calendário Semanal</h2>
+      <div class="calendar-nav">
+        <button class="btn" onclick="changeWeek(-1)">← Semana anterior</button>
+        <span id="weekRange" class="pill"></span>
+        <button class="btn" onclick="changeWeek(1)">Próxima semana →</button>
+      </div>
+
+      <div class="status-legend">
+        <span class="legend" style="background:#ff4c4c"></span> Parado
+        <span class="legend" style="background:#ffae42"></span> Pausado/Aguardando/Em pausa
+        <span class="legend" style="background:#3b82f6"></span> Em andamento
+        <span class="legend" style="background:#22c55e"></span> Concluído/Finalizado
+      </div>
+
+      <div class="week" id="calendarWeek"></div>
+
+      <div class="filter">
+        <label for="filterStatus">Filtrar:</label>
+        <select id="filterStatus" onchange="renderTasksOfDay()">
+          <option value="">Todos</option>
+          <option value="Em andamento">Em andamento</option>
+          <option value="Pausado">Pausado</option>
+          <option value="Parado">Parado</option>
+          <option value="Concluído">Concluído</option>
+        </select>
+      </div>
+
+      <div id="tasksOfDay"></div>
+    </section>
+
+    <!-- 📝 NOVA AÇÃO -->
+    <section class="task-form">
+      <h2>📝 Nova Ação</h2>
+      <textarea id="taskDesc" placeholder="Descreva a ação..." rows="2"></textarea>
+      <div class="row">
+        <select id="taskStatus">
+          <option value="Em andamento">Em andamento</option>
+          <option value="Pausado">Pausado</option>
+          <option value="Parado">Parado</option>
+          <option value="Concluído">Concluído</option>
+        </select>
+        <input type="date" id="taskDate" />
+        <input type="text" id="taskCat" placeholder="Categoria (opcional)" />
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="addTask()">Adicionar</button>
+        <button class="btn ghost" onclick="clearDone()">Limpar concluídas</button>
+      </div>
+    </section>
+
+    <!-- 📋 TODAS AS AÇÕES -->
+    <section class="task-list">
+      <h2>📋 Todas as Ações</h2>
+      <div id="taskList"></div>
+    </section>
+
+    <!-- 📞 CHAMADOS EM ATENÇÃO -->
+    <section class="calls">
+      <h2>📞 Chamados em Atenção</h2>
+      <div class="row">
+        <input type="text" id="callNumber" placeholder="Nº do chamado (ex: 345124)" />
+        <input type="text" id="callDesc" placeholder="Descrição (ex: Troca de impressora)" />
+        <select id="callStatus">
+          <option value="Em andamento">Em andamento</option>
+          <option value="Aguardando resposta">Aguardando resposta</option>
+          <option value="Em pausa">Em pausa</option>
+          <option value="Finalizado">Finalizado</option>
+        </select>
+      </div>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn" onclick="addCall()">Adicionar chamado</button>
+      </div>
+      <div id="callList" style="margin-top:12px"></div>
+    </section>
+
   </main>
 
   <script src="script.js"></script>
