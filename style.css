@@ -1,174 +1,192 @@
-/* ESTILOS GERAIS */
+:root {
+  --bg: #0a0d1a;
+  --panel: #121831;
+  --accent: #5b8dff;
+  --border: #29315a;
+  --ink: #e5e7eb;
+  --muted: #a2a7b8;
+  --ok: #22c55e;
+}
+
+* { box-sizing: border-box; }
 body {
-  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at 30% 10%, #101633, var(--bg));
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
   margin: 0;
-  background: #0e101c;
-  color: #f0f0f0;
 }
 
+/* Galáxia sutil */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  background: radial-gradient(white, transparent 70%) repeat;
+  background-size: 2px 2px;
+  opacity: 0.06;
+  animation: stars 30s linear infinite;
+  pointer-events: none;
+}
+@keyframes stars { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
+
+h1, h2 { font-family: "JetBrains Mono", monospace; margin-bottom: 8px; }
 header {
-  background: #1f2233;
-  padding: 1rem;
+  background: var(--panel);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.wrap { width: 95%; max-width: 1100px; margin: auto; }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.btn {
+  background: var(--accent); color: #fff; border: none;
+  padding: 6px 10px; border-radius: 6px; cursor: pointer;
+}
+.btn:hover { opacity: 0.9; }
+.btn.ghost { background: transparent; border: 1px solid var(--border); color: var(--ink); }
+
+.pill {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--muted);
+}
+section { margin-top: 18px; }
+
+/* 📊 Dashboard */
+/* ===== DASHBOARD 3.2.2 ===== */
+#dashboard {
+  background: linear-gradient(180deg, #141a33, #0d1122);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.3);
   text-align: center;
-  border-bottom: 2px solid #4caf50;
 }
 
-h1 {
-  margin: 0;
-  font-size: 1.8rem;
-}
-
-main {
-  padding: 2rem;
-}
-
-/* FORMULÁRIO DE NOVA TAREFA */
-form, .task-form {
+#dashboard .dash-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  background: #1a1c2d;
-  padding: 1rem;
-  border-radius: 8px;
+  justify-content: center;
+  gap: 14px;
 }
 
-input, select, button, textarea {
-  padding: 0.5rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-family: 'Segoe UI', sans-serif;
+#dashboard .card {
+  flex: 1 1 150px;
+  max-width: 160px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 10px;
+  transition: all 0.25s ease;
+}
+#dashboard .card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px #0005;
 }
 
-input, select, textarea {
-  background: #2a2d3e;
-  color: #f0f0f0;
-  flex: 1;
-  min-width: 150px;
-  resize: vertical;
+#dashboard .kpi {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+#dashboard .kpi-label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
 }
 
-button {
-  background: #4caf50;
-  color: white;
-  cursor: pointer;
-  transition: background 0.3s;
-  flex-shrink: 0;
-  min-width: 100px;
+#dashboard .dash-range {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  display: block;
 }
 
-button:hover {
-  background: #43a047;
+
+/* Checklist fixo */
+#fixedProgressWrapper { margin-bottom: 10px; background: #0a0d1a; border-radius: 6px; overflow: hidden; height: 8px; }
+#fixedProgress { height: 8px; background: var(--accent); width: 0%; transition: width 0.3s ease; }
+#fixedPercent { font-size: 13px; margin-top: 4px; text-align: right; }
+#fixedContainer details summary { cursor: pointer; font-weight: 600; }
+
+.info-block {
+  background: #0e1326; border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px; font-size: 13px; margin-top: 8px;
+}
+ul.check { list-style: none; padding: 0; margin: 0; }
+ul.check li {
+  display: flex; gap: 10px; align-items: flex-start;
+  margin: 6px 0; padding: 6px 10px; background: var(--panel);
+  border: 1px solid var(--border); border-radius: 8px;
 }
 
-/* CONTAINER DE DIAS */
-#calendarWeek {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-}
-
-/* CADA DIA */
+/* Calendário */
+.calendar-nav { display: flex; align-items: center; gap: 8px; }
+.week { margin-top: 10px; }
 .day {
-  background: #1f2233;
-  border: 1px solid #333;
-  padding: 1rem;
-  border-radius: 8px;
+  display: inline-block; background: var(--panel); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px; text-align: center; cursor: pointer;
+  width: calc(14.2% - 6px); margin-right: 4px; transition: 0.2s ease;
+}
+.day.active { border: 2px solid var(--accent); background: #1b2140; }
+.day.alert { border: 2px solid #ff4c4c !important; }
+.badge { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--muted); }
+
+.status-legend {
+  display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px;
+  margin: 8px 0 16px; color: var(--muted);
+}
+.legend { width: 14px; height: 14px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+
+/* Tarefas do dia */
+#tasksOfDay { margin-top: 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+#tasksOfDay h3 { margin-top: 0; font-size: 15px; color: var(--ink); }
+.task-card {
+  border-radius: 10px; padding: 10px; margin-top: 8px; border: 1px solid var(--border);
+  transition: 0.2s;
+}
+.task-card:hover { transform: translateY(-2px); box-shadow: 0 0 10px #0003; }
+.task-header { display: flex; justify-content: space-between; align-items: center; }
+.task-header .status { background: #111; padding: 2px 8px; border-radius: 8px; font-size: 13px; }
+.task-card .meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.task-card .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+/* Lista geral de ações */
+.task-item {
+  display: flex; gap: 10px; align-items: center; justify-content: space-between;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 8px; margin-top: 8px;
+}
+.task-actions { display: flex; gap: 6px; }
+
+/* Chamados */
+.calls .row { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 8px; }
+.call-card {
+  border-radius: 10px; padding: 10px; margin-top: 8px; border: 1px solid var(--border);
+  transition: 0.2s; background: var(--panel);
+}
+.call-card:hover { transform: translateY(-2px); box-shadow: 0 0 10px #0003; }
+.call-head { display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+.call-meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.call-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+/* Filtro */
+.filter { margin-top: 10px; font-size: 13px; color: var(--muted); }
+.filter select {
+  background: var(--panel); border: 1px solid var(--border); color: var(--ink);
+  padding: 4px; border-radius: 6px;
 }
 
-.day h3 {
-  margin-top: 0;
-  font-size: 1.2rem;
-  border-bottom: 1px solid #4caf50;
-  padding-bottom: 0.5rem;
+/* Responsivo */
+@media (max-width: 900px) {
+  #dashboard .dash-grid { grid-template-columns: repeat(3, 1fr); }
 }
-
-/* TAREFA */
-.task {
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-/* CORES POR STATUS */
-.task.feito {
-  background-color: #2e7d32;
-}
-
-.task.parado {
-  background-color: #c62828;
-}
-
-.task.em-andamento {
-  background-color: #1565c0;
-}
-
-/* BOTÕES DAS TAREFAS */
-.task button {
-  background-color: #ff5555;
-  color: white;
-  border: none;
-  padding: 4px 6px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-  transition: background 0.2s;
-}
-
-.task button:hover {
-  background-color: #d32f2f;
-}
-
-/* BOTÃO TOGGLE DE MOSTRAR MAIS */
-.task .toggle {
-  background: #4caf50;
-  color: white;
-  border: none;
-  padding: 2px 8px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  transition: background 0.2s;
-  margin-left: 0;
-}
-
-.task .toggle:hover {
-  background: #388e3c;
-}
-
-/* CONTADOR DE CARACTERES */
-.char-count {
-  font-size: 0.7rem;
-  color: #ccc;
-  text-align: right;
-  margin-top: -0.3rem;
-}
-
-/* RESPONSIVO */
-@media (max-width: 600px) {
-  form, .task-form {
-    flex-direction: column;
-  }
-
-  #calendarWeek {
-    grid-template-columns: 1fr;
-  }
-}
-.task select {
-  min-width: auto;      /* remove largura mínima */
-  width: auto;          /* largura automática */
-  max-width: 120px;     /* largura máxima para não ficar muito grande */
-  padding: 4px 8px;     /* padding menor para ficar compacto */
-  font-size: 0.9rem;    /* tamanho da fonte um pouco menor */
-  border-radius: 4px;
-  border: 1px solid #555;
-  background: #2a2d3e;
-  color: #f0f0f0;
-  cursor: pointer;
+@media (max-width: 768px) {
+  .toolbar { flex-direction: column; }
+  .day { width: calc(50% - 6px); }
+  header h1 { font-size: 16px; line-height: 1.4; }
+  .calendar-nav button { font-size: 12px; padding: 4px 8px; }
+  .filter, .status-legend { justify-content: center; }
+  .calls .row { grid-template-columns: 1fr; }
+  #dashboard .dash-grid { grid-template-columns: repeat(2, 1fr); }
 }
