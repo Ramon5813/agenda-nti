@@ -345,3 +345,43 @@ searchInput.addEventListener(
 renderTasks();
 
 updateKPIs();
+// =====================================
+// MENU / PAGES
+// =====================================
+
+const menuButtons =
+  document.querySelectorAll(".menu");
+
+const pages =
+  document.querySelectorAll(".page");
+
+menuButtons.forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    // REMOVE ACTIVE MENU
+    menuButtons.forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    // ADD ACTIVE MENU
+    button.classList.add("active");
+
+    // PAGE ID
+    const pageId =
+      button.dataset.page;
+
+    // HIDE PAGES
+    pages.forEach(page => {
+      page.classList.remove("active-page");
+    });
+
+    // SHOW PAGE
+    document
+      .getElementById(pageId)
+      .classList
+      .add("active-page");
+
+  });
+
+});
