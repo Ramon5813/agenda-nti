@@ -1,151 +1,337 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+// =====================================
+// 🌌 JUPITER CORE
+// =====================================
 
-<head>
+const STORAGE_KEY = "jupiter_tasks";
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+// ARRAY
+let tasks =
+  JSON.parse(
+    localStorage.getItem(STORAGE_KEY)
+  ) || [];
 
-  <title>🌌 Jupiter Core</title>
+// =====================================
+// ELEMENTOS
+// =====================================
 
-  <link rel="stylesheet" href="style.css">
+const taskTitle =
+  document.getElementById("taskTitle");
 
-  <!-- FONT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+const taskDescription =
+  document.getElementById("taskDescription");
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+const taskStatus =
+  document.getElementById("taskStatus");
 
-  <!-- ICONS -->
-  <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+const addTaskBtn =
+  document.getElementById("addTaskBtn");
 
-</head>
+const taskList =
+  document.getElementById("taskList");
 
-<body>
+const searchInput =
+  document.getElementById("searchInput");
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
+// KPIS
+const kpiTotal =
+  document.getElementById("kpiTotal");
 
-    <div class="logo">
-      🌌 Jupiter
-    </div>
+const kpiDone =
+  document.getElementById("kpiDone");
 
-    <nav>
+const kpiPending =
+  document.getElementById("kpiPending");
 
-      <button class="menu active">
-        <i class="fa-solid fa-chart-line"></i>
-        Dashboard
-      </button>
+// =====================================
+// SAVE
+// =====================================
 
-      <button class="menu">
-        <i class="fa-solid fa-list-check"></i>
-        Tarefas
-      </button>
+function saveTasks() {
 
-      <button class="menu">
-        <i class="fa-solid fa-calendar"></i>
-        Agenda
-      </button>
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(tasks)
+  );
 
-    </nav>
+}
 
-  </aside>
+// =====================================
+// STATUS
+// =====================================
 
-  <!-- MAIN -->
-  <main class="main">
+function getStatusClass(status) {
 
-    <!-- TOP -->
-    <header class="topbar">
+  if(status === "Concluído"){
+    return "status-done";
+  }
 
-      <div>
-        <h1>Dashboard Operacional</h1>
-        <p>Gerenciamento de tarefas e produtividade</p>
+  if(status === "Pausado"){
+    return "status-pause";
+  }
+
+  return "status-progress";
+
+}
+
+// =====================================
+// ADD TASK
+// =====================================
+
+function addTask() {
+
+  const title =
+    taskTitle.value.trim();
+
+  const description =
+    taskDescription.value.trim();
+
+  const status =
+    taskStatus.value;
+
+  if(title === ""){
+
+    alert("Digite uma tarefa.");
+    return;
+
+  }
+
+  const newTask = {
+
+    id: Date.now(),
+
+    title: title,
+
+    description: description,
+
+    status: status
+
+  };
+
+  tasks.unshift(newTask);
+
+  saveTasks();
+
+  renderTasks();
+
+  updateKPIs();
+
+  clearForm();
+
+}
+
+// =====================================
+// CLEAR
+// =====================================
+
+function clearForm(){
+
+  taskTitle.value = "";
+  taskDescription.value = "";
+
+  taskStatus.value =
+    "Em andamento";
+
+}
+
+// =====================================
+// DELETE
+// =====================================
+
+function deleteTask(id){
+
+  tasks =
+    tasks.filter(
+      task => task.id !== id
+    );
+
+  saveTasks();
+
+  renderTasks();
+
+  updateKPIs();
+
+}
+
+// =====================================
+// CHANGE STATUS
+// =====================================
+
+function changeStatus(id){
+
+  const task =
+    tasks.find(
+      task => task.id === id
+    );
+
+  if(!task) return;
+
+  if(task.status === "Em andamento"){
+
+    task.status = "Pausado";
+
+  }
+
+  else if(task.status === "Pausado"){
+
+    task.status = "Concluído";
+
+  }
+
+  else {
+
+    task.status = "Em andamento";
+
+  }
+
+  saveTasks();
+
+  renderTasks();
+
+  updateKPIs();
+
+}
+
+// =====================================
+// RENDER
+// =====================================
+
+function renderTasks(){
+
+  taskList.innerHTML = "";
+
+  const search =
+    searchInput.value.toLowerCase();
+
+  const filtered =
+    tasks.filter(task => {
+
+      return (
+
+        task.title
+          .toLowerCase()
+          .includes(search)
+
+        ||
+
+        task.description
+          .toLowerCase()
+          .includes(search)
+
+      );
+
+    });
+
+  if(filtered.length === 0){
+
+    taskList.innerHTML = `
+      <p style="color:#94a3b8">
+        Nenhuma tarefa.
+      </p>
+    `;
+
+    return;
+
+  }
+
+  filtered.forEach(task => {
+
+    const taskDiv =
+      document.createElement("div");
+
+    taskDiv.className = "task";
+
+    taskDiv.innerHTML = `
+
+      <div class="task-top">
+
+        <div class="task-title">
+          ${task.title}
+        </div>
+
+        <div class="
+          task-status
+          ${getStatusClass(task.status)}
+        ">
+          ${task.status}
+        </div>
+
       </div>
 
-      <button class="theme-btn">
-        <i class="fa-solid fa-moon"></i>
-      </button>
+      <p>
+        ${task.description}
+      </p>
 
-    </header>
+      <div class="task-buttons">
 
-    <!-- KPI -->
-    <section class="kpis">
-
-      <div class="kpi-card">
-        <span>Total</span>
-        <h2 id="kpiTotal">0</h2>
-      </div>
-
-      <div class="kpi-card">
-        <span>Concluídas</span>
-        <h2 id="kpiDone">0</h2>
-      </div>
-
-      <div class="kpi-card">
-        <span>Pendentes</span>
-        <h2 id="kpiPending">0</h2>
-      </div>
-
-    </section>
-
-    <!-- GRID -->
-    <section class="grid">
-
-      <!-- FORM -->
-      <div class="card">
-
-        <h3>📝 Nova tarefa</h3>
-
-        <input
-          type="text"
-          id="taskTitle"
-          placeholder="Título da tarefa"
+        <button
+          onclick="changeStatus(${task.id})"
         >
+          Status
+        </button>
 
-        <textarea
-          id="taskDescription"
-          placeholder="Descrição"
-        ></textarea>
-
-        <select id="taskStatus">
-
-          <option>Em andamento</option>
-          <option>Pausado</option>
-          <option>Concluído</option>
-
-        </select>
-
-        <button id="addTaskBtn">
-          Adicionar tarefa
+        <button
+          onclick="deleteTask(${task.id})"
+        >
+          Excluir
         </button>
 
       </div>
 
-      <!-- TASKS -->
-      <div class="card">
+    `;
 
-        <div class="task-header">
+    taskList.appendChild(taskDiv);
 
-          <h3>📋 Tarefas</h3>
+  });
 
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Pesquisar"
-          >
+}
 
-        </div>
+// =====================================
+// KPI
+// =====================================
 
-        <div id="taskList"></div>
+function updateKPIs(){
 
-      </div>
+  const total =
+    tasks.length;
 
-    </section>
+  const done =
+    tasks.filter(
+      task =>
+        task.status === "Concluído"
+    ).length;
 
-  </main>
+  const pending =
+    tasks.filter(
+      task =>
+        task.status !== "Concluído"
+    ).length;
 
-  <script src="script.js"></script>
+  kpiTotal.textContent = total;
 
-</body>
-</html>
+  kpiDone.textContent = done;
+
+  kpiPending.textContent = pending;
+
+}
+
+// =====================================
+// EVENTS
+// =====================================
+
+addTaskBtn.addEventListener(
+  "click",
+  addTask
+);
+
+searchInput.addEventListener(
+  "input",
+  renderTasks
+);
+
+// =====================================
+// INIT
+// =====================================
+
+renderTasks();
+
+updateKPIs();
