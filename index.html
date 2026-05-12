@@ -2,154 +2,336 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🌌 Júpiter 3.2.1 — Painel NTI Ramon Sesc Mogi</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>🌌 Jupiter Core</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css"/>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
 </head>
+
 <body>
-  <header>
-    <div class="wrap">
-      <h1>🌌 Júpiter 3.2.1 — Painel NTI Ramon Sesc Mogi</h1>
-      <div class="toolbar">
-        <button class="btn" id="btnNew">➕ Nova ação</button>
-        <button class="btn" id="btnResetFixed">♻️ Reiniciar checklist</button>
-        <button class="btn" id="btnExport">🧾 Exportar (PDF/Imprimir)</button>
-        <button class="btn ghost" id="btnCSV">📤 Exportar CSV</button>
-        <button class="btn ghost" id="btnBackup">💾 Backup</button>
-        <button class="btn ghost" id="btnImport">📂 Importar</button>
-        <input type="file" id="importFile" accept=".json" style="display:none" />
-        <button class="btn ghost" id="btnOverdue">🔔 Destacar atrasadas: ON</button>
-        <button class="btn ghost" id="btnTheme">🌗 Tema</button>
+
+  <!-- ================================= -->
+  <!-- 🌌 SIDEBAR -->
+  <!-- ================================= -->
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fa-solid fa-planet-ringed"></i>
+      </div>
+
+      <div>
+        <h1>Jupiter</h1>
+        <span>Core v4.0</span>
       </div>
     </div>
-  </header>
 
-  <main class="wrap">
+    <nav class="menu">
 
-    <!-- 📊 MINI DASHBOARD -->
-    <section id="dashboard">
-      <div class="dash-grid">
-        <div class="card">
-          <div class="kpi" id="kpiTotal">0</div>
-          <div class="kpi-label">Tarefas na semana</div>
-        </div>
-        <div class="card">
-          <div class="kpi" id="kpiDone">0</div>
-          <div class="kpi-label">Concluídas</div>
-        </div>
-        <div class="card">
-          <div class="kpi" id="kpiPend">0</div>
-          <div class="kpi-label">Pendentes</div>
-        </div>
-        <div class="card">
-          <div class="kpi" id="kpiPct">0%</div>
-          <div class="kpi-label">% conclusão</div>
-        </div>
-        <div class="card">
-          <div class="kpi" id="kpiCalls">0</div>
-          <div class="kpi-label">Chamados abertos</div>
+      <button class="menu-item active">
+        <i class="fa-solid fa-chart-line"></i>
+        Dashboard
+      </button>
+
+      <button class="menu-item">
+        <i class="fa-solid fa-list-check"></i>
+        Tarefas
+      </button>
+
+      <button class="menu-item">
+        <i class="fa-solid fa-calendar-days"></i>
+        Calendário
+      </button>
+
+      <button class="menu-item">
+        <i class="fa-solid fa-folder-tree"></i>
+        Bases
+      </button>
+
+      <button class="menu-item">
+        <i class="fa-solid fa-headset"></i>
+        Chamados
+      </button>
+
+      <button class="menu-item">
+        <i class="fa-solid fa-chart-pie"></i>
+        Relatórios
+      </button>
+
+      <button class="menu-item">
+        <i class="fa-solid fa-gear"></i>
+        Configurações
+      </button>
+
+    </nav>
+
+    <div class="sidebar-footer">
+
+      <div class="user-card">
+        <div class="avatar">R</div>
+
+        <div>
+          <strong>Ramon</strong>
+          <span>NTI • Sesc Mogi</span>
         </div>
       </div>
-      <div class="dash-range pill" id="dashRange">—</div>
+
+    </div>
+
+  </aside>
+
+  <!-- ================================= -->
+  <!-- 🌌 MAIN -->
+  <!-- ================================= -->
+
+  <main class="main-content">
+
+    <!-- HEADER -->
+    <header class="topbar">
+
+      <div>
+        <h2>🌌 Dashboard Operacional</h2>
+        <p>Gerenciamento de tarefas, checklists e chamados</p>
+      </div>
+
+      <div class="topbar-actions">
+
+        <button class="action-btn">
+          <i class="fa-solid fa-bell"></i>
+        </button>
+
+        <button class="action-btn">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+
+      </div>
+
+    </header>
+
+    <!-- KPIs -->
+    <section class="kpi-grid">
+
+      <div class="kpi-card">
+        <span>Total</span>
+        <h3 id="kpiTotal">0</h3>
+      </div>
+
+      <div class="kpi-card">
+        <span>Concluídas</span>
+        <h3 id="kpiDone">0</h3>
+      </div>
+
+      <div class="kpi-card">
+        <span>Pendentes</span>
+        <h3 id="kpiPending">0</h3>
+      </div>
+
+      <div class="kpi-card">
+        <span>Chamados</span>
+        <h3 id="kpiCalls">0</h3>
+      </div>
+
     </section>
 
-    <!-- 🧠 CHECKLIST FIXO -->
-    <section id="fixed">
-      <h2>🧠 Checklist de Abertura da UO</h2>
+    <!-- GRID -->
+    <section class="dashboard-grid">
 
-      <div id="fixedProgressWrapper"><div id="fixedProgress"></div></div>
-      <div id="fixedPercent">0% concluído</div>
+      <!-- ================================= -->
+      <!-- 📝 NOVA TAREFA -->
+      <!-- ================================= -->
 
-      <div class="actions" style="margin:6px 0 12px;">
-        <button class="btn ghost" onclick="markAllFixed(true)">✔️ Marcar tudo</button>
-        <button class="btn ghost" onclick="markAllFixed(false)">❌ Desmarcar tudo</button>
+      <div class="panel glass">
+
+        <div class="panel-header">
+          <h3>📝 Nova tarefa</h3>
+        </div>
+
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" id="taskTitle" placeholder="Digite a tarefa..." />
+        </div>
+
+        <div class="form-group">
+          <label>Descrição</label>
+          <textarea id="taskDescription" rows="4"></textarea>
+        </div>
+
+        <div class="grid-2">
+
+          <div class="form-group">
+            <label>Status</label>
+
+            <select id="taskStatus">
+              <option>Em andamento</option>
+              <option>Pausado</option>
+              <option>Parado</option>
+              <option>Concluído</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Prioridade</label>
+
+            <select id="taskPriority">
+              <option>Baixa</option>
+              <option>Média</option>
+              <option>Alta</option>
+              <option>Crítica</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="grid-2">
+
+          <div class="form-group">
+            <label>Categoria</label>
+            <input type="text" id="taskCategory" placeholder="#Infra" />
+          </div>
+
+          <div class="form-group">
+            <label>Prazo</label>
+            <input type="date" id="taskDate"/>
+          </div>
+
+        </div>
+
+        <button class="primary-btn" id="addTaskBtn">
+          <i class="fa-solid fa-plus"></i>
+          Adicionar tarefa
+        </button>
+
       </div>
 
-      <div id="fixedContainer"></div>
-      <div class="actions" style="margin-top:10px">
-        <span class="pill">✅ Progresso salvo automaticamente</span>
+      <!-- ================================= -->
+      <!-- 📋 LISTA -->
+      <!-- ================================= -->
+
+      <div class="panel glass">
+
+        <div class="panel-header">
+          <h3>📋 Tarefas</h3>
+
+          <input
+            type="text"
+            placeholder="Pesquisar..."
+            class="search-input"
+            id="searchTask"
+          />
+        </div>
+
+        <div id="taskList" class="task-list"></div>
+
       </div>
+
     </section>
 
-    <!-- 📆 CALENDÁRIO + TAREFAS -->
-    <section class="calendar">
-      <h2>📆 Calendário Semanal</h2>
-      <div class="calendar-nav">
-        <button class="btn" onclick="changeWeek(-1)">← Semana anterior</button>
-        <span id="weekRange" class="pill"></span>
-        <button class="btn" onclick="changeWeek(1)">Próxima semana →</button>
+    <!-- ================================= -->
+    <!-- 📅 CALENDÁRIO -->
+    <!-- ================================= -->
+
+    <section class="panel glass">
+
+      <div class="panel-header">
+        <h3>📅 Agenda semanal</h3>
+
+        <div class="calendar-actions">
+          <button class="action-btn" id="prevWeek">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+
+          <button class="action-btn" id="nextWeek">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
       </div>
 
-      <div class="status-legend">
-        <span class="legend" style="background:#ff4c4c"></span> Parado
-        <span class="legend" style="background:#ffae42"></span> Pausado/Aguardando/Em pausa
-        <span class="legend" style="background:#3b82f6"></span> Em andamento
-        <span class="legend" style="background:#22c55e"></span> Concluído/Finalizado
-      </div>
+      <div class="week-calendar" id="weekCalendar"></div>
 
-      <div class="week" id="calendarWeek"></div>
-
-      <div class="filter">
-        <label for="filterStatus">Filtrar:</label>
-        <select id="filterStatus" onchange="renderTasksOfDay()">
-          <option value="">Todos</option>
-          <option value="Em andamento">Em andamento</option>
-          <option value="Pausado">Pausado</option>
-          <option value="Parado">Parado</option>
-          <option value="Concluído">Concluído</option>
-        </select>
-      </div>
-
-      <div id="tasksOfDay"></div>
     </section>
 
-    <!-- 📝 NOVA AÇÃO -->
-    <section class="task-form">
-      <h2>📝 Nova Ação</h2>
-      <textarea id="taskDesc" placeholder="Descreva a ação..." rows="2"></textarea>
-      <div class="row">
-        <select id="taskStatus">
-          <option value="Em andamento">Em andamento</option>
-          <option value="Pausado">Pausado</option>
-          <option value="Parado">Parado</option>
-          <option value="Concluído">Concluído</option>
-        </select>
-        <input type="date" id="taskDate" />
-        <input type="text" id="taskCat" placeholder="Categoria (opcional)" />
+    <!-- ================================= -->
+    <!-- ✅ BASES FIXAS -->
+    <!-- ================================= -->
+
+    <section class="panel glass">
+
+      <div class="panel-header">
+        <h3>✅ Bases operacionais</h3>
+
+        <button class="primary-btn small">
+          <i class="fa-solid fa-plus"></i>
+          Nova Base
+        </button>
       </div>
-      <div class="actions">
-        <button class="btn" onclick="addTask()">Adicionar</button>
-        <button class="btn ghost" onclick="clearDone()">Limpar concluídas</button>
-      </div>
+
+      <div id="baseContainer" class="base-grid"></div>
+
     </section>
 
-    <!-- 📋 TODAS AS AÇÕES -->
-    <section class="task-list">
-      <h2>📋 Todas as Ações</h2>
-      <div id="taskList"></div>
-    </section>
+    <!-- ================================= -->
+    <!-- 📞 CHAMADOS -->
+    <!-- ================================= -->
 
-    <!-- 📞 CHAMADOS EM ATENÇÃO -->
-    <section class="calls">
-      <h2>📞 Chamados em Atenção</h2>
-      <div class="row">
-        <input type="text" id="callNumber" placeholder="Nº do chamado (ex: 345124)" />
-        <input type="text" id="callDesc" placeholder="Descrição (ex: Troca de impressora)" />
+    <section class="panel glass">
+
+      <div class="panel-header">
+        <h3>📞 Chamados em atenção</h3>
+      </div>
+
+      <div class="call-form">
+
+        <input
+          type="text"
+          id="callNumber"
+          placeholder="Número chamado"
+        />
+
+        <input
+          type="text"
+          id="callDescription"
+          placeholder="Descrição"
+        />
+
         <select id="callStatus">
-          <option value="Em andamento">Em andamento</option>
-          <option value="Aguardando resposta">Aguardando resposta</option>
-          <option value="Em pausa">Em pausa</option>
-          <option value="Finalizado">Finalizado</option>
+
+          <option>Em andamento</option>
+          <option>Aguardando</option>
+          <option>Em pausa</option>
+          <option>Finalizado</option>
+
         </select>
+
+        <button class="primary-btn" id="addCallBtn">
+          Adicionar
+        </button>
+
       </div>
-      <div class="actions" style="margin-top:10px">
-        <button class="btn" onclick="addCall()">Adicionar chamado</button>
-      </div>
-      <div id="callList" style="margin-top:12px"></div>
+
+      <div id="callList" class="call-list"></div>
+
     </section>
 
   </main>
 
+  <!-- JS -->
   <script src="script.js"></script>
+
 </body>
 </html>
