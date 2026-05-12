@@ -1,336 +1,150 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>🌌 Jupiter Core</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css">
 
-  <!-- Fonts -->
+  <!-- FONT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Icons -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  />
+  <!-- ICONS -->
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 </head>
 
 <body>
 
-  <!-- ================================= -->
-  <!-- 🌌 SIDEBAR -->
-  <!-- ================================= -->
-
+  <!-- SIDEBAR -->
   <aside class="sidebar">
 
     <div class="logo">
-      <div class="logo-icon">
-        <i class="fa-solid fa-planet-ringed"></i>
-      </div>
-
-      <div>
-        <h1>Jupiter</h1>
-        <span>Core v4.0</span>
-      </div>
+      🌌 Jupiter
     </div>
 
-    <nav class="menu">
+    <nav>
 
-      <button class="menu-item active">
+      <button class="menu active">
         <i class="fa-solid fa-chart-line"></i>
         Dashboard
       </button>
 
-      <button class="menu-item">
+      <button class="menu">
         <i class="fa-solid fa-list-check"></i>
         Tarefas
       </button>
 
-      <button class="menu-item">
-        <i class="fa-solid fa-calendar-days"></i>
-        Calendário
-      </button>
-
-      <button class="menu-item">
-        <i class="fa-solid fa-folder-tree"></i>
-        Bases
-      </button>
-
-      <button class="menu-item">
-        <i class="fa-solid fa-headset"></i>
-        Chamados
-      </button>
-
-      <button class="menu-item">
-        <i class="fa-solid fa-chart-pie"></i>
-        Relatórios
-      </button>
-
-      <button class="menu-item">
-        <i class="fa-solid fa-gear"></i>
-        Configurações
+      <button class="menu">
+        <i class="fa-solid fa-calendar"></i>
+        Agenda
       </button>
 
     </nav>
 
-    <div class="sidebar-footer">
-
-      <div class="user-card">
-        <div class="avatar">R</div>
-
-        <div>
-          <strong>Ramon</strong>
-          <span>NTI • Sesc Mogi</span>
-        </div>
-      </div>
-
-    </div>
-
   </aside>
 
-  <!-- ================================= -->
-  <!-- 🌌 MAIN -->
-  <!-- ================================= -->
+  <!-- MAIN -->
+  <main class="main">
 
-  <main class="main-content">
-
-    <!-- HEADER -->
+    <!-- TOP -->
     <header class="topbar">
 
       <div>
-        <h2>🌌 Dashboard Operacional</h2>
-        <p>Gerenciamento de tarefas, checklists e chamados</p>
+        <h1>Dashboard Operacional</h1>
+        <p>Gerenciamento de tarefas e produtividade</p>
       </div>
 
-      <div class="topbar-actions">
-
-        <button class="action-btn">
-          <i class="fa-solid fa-bell"></i>
-        </button>
-
-        <button class="action-btn">
-          <i class="fa-solid fa-moon"></i>
-        </button>
-
-      </div>
+      <button class="theme-btn">
+        <i class="fa-solid fa-moon"></i>
+      </button>
 
     </header>
 
-    <!-- KPIs -->
-    <section class="kpi-grid">
+    <!-- KPI -->
+    <section class="kpis">
 
       <div class="kpi-card">
         <span>Total</span>
-        <h3 id="kpiTotal">0</h3>
+        <h2 id="kpiTotal">0</h2>
       </div>
 
       <div class="kpi-card">
         <span>Concluídas</span>
-        <h3 id="kpiDone">0</h3>
+        <h2 id="kpiDone">0</h2>
       </div>
 
       <div class="kpi-card">
         <span>Pendentes</span>
-        <h3 id="kpiPending">0</h3>
-      </div>
-
-      <div class="kpi-card">
-        <span>Chamados</span>
-        <h3 id="kpiCalls">0</h3>
+        <h2 id="kpiPending">0</h2>
       </div>
 
     </section>
 
     <!-- GRID -->
-    <section class="dashboard-grid">
+    <section class="grid">
 
-      <!-- ================================= -->
-      <!-- 📝 NOVA TAREFA -->
-      <!-- ================================= -->
+      <!-- FORM -->
+      <div class="card">
 
-      <div class="panel glass">
+        <h3>📝 Nova tarefa</h3>
 
-        <div class="panel-header">
-          <h3>📝 Nova tarefa</h3>
-        </div>
+        <input
+          type="text"
+          id="taskTitle"
+          placeholder="Título da tarefa"
+        >
 
-        <div class="form-group">
-          <label>Título</label>
-          <input type="text" id="taskTitle" placeholder="Digite a tarefa..." />
-        </div>
+        <textarea
+          id="taskDescription"
+          placeholder="Descrição"
+        ></textarea>
 
-        <div class="form-group">
-          <label>Descrição</label>
-          <textarea id="taskDescription" rows="4"></textarea>
-        </div>
+        <select id="taskStatus">
 
-        <div class="grid-2">
+          <option>Em andamento</option>
+          <option>Pausado</option>
+          <option>Concluído</option>
 
-          <div class="form-group">
-            <label>Status</label>
+        </select>
 
-            <select id="taskStatus">
-              <option>Em andamento</option>
-              <option>Pausado</option>
-              <option>Parado</option>
-              <option>Concluído</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Prioridade</label>
-
-            <select id="taskPriority">
-              <option>Baixa</option>
-              <option>Média</option>
-              <option>Alta</option>
-              <option>Crítica</option>
-            </select>
-          </div>
-
-        </div>
-
-        <div class="grid-2">
-
-          <div class="form-group">
-            <label>Categoria</label>
-            <input type="text" id="taskCategory" placeholder="#Infra" />
-          </div>
-
-          <div class="form-group">
-            <label>Prazo</label>
-            <input type="date" id="taskDate"/>
-          </div>
-
-        </div>
-
-        <button class="primary-btn" id="addTaskBtn">
-          <i class="fa-solid fa-plus"></i>
+        <button id="addTaskBtn">
           Adicionar tarefa
         </button>
 
       </div>
 
-      <!-- ================================= -->
-      <!-- 📋 LISTA -->
-      <!-- ================================= -->
+      <!-- TASKS -->
+      <div class="card">
 
-      <div class="panel glass">
+        <div class="task-header">
 
-        <div class="panel-header">
           <h3>📋 Tarefas</h3>
 
           <input
             type="text"
-            placeholder="Pesquisar..."
-            class="search-input"
-            id="searchTask"
-          />
+            id="searchInput"
+            placeholder="Pesquisar"
+          >
+
         </div>
 
-        <div id="taskList" class="task-list"></div>
+        <div id="taskList"></div>
 
       </div>
-
-    </section>
-
-    <!-- ================================= -->
-    <!-- 📅 CALENDÁRIO -->
-    <!-- ================================= -->
-
-    <section class="panel glass">
-
-      <div class="panel-header">
-        <h3>📅 Agenda semanal</h3>
-
-        <div class="calendar-actions">
-          <button class="action-btn" id="prevWeek">
-            <i class="fa-solid fa-chevron-left"></i>
-          </button>
-
-          <button class="action-btn" id="nextWeek">
-            <i class="fa-solid fa-chevron-right"></i>
-          </button>
-        </div>
-
-      </div>
-
-      <div class="week-calendar" id="weekCalendar"></div>
-
-    </section>
-
-    <!-- ================================= -->
-    <!-- ✅ BASES FIXAS -->
-    <!-- ================================= -->
-
-    <section class="panel glass">
-
-      <div class="panel-header">
-        <h3>✅ Bases operacionais</h3>
-
-        <button class="primary-btn small">
-          <i class="fa-solid fa-plus"></i>
-          Nova Base
-        </button>
-      </div>
-
-      <div id="baseContainer" class="base-grid"></div>
-
-    </section>
-
-    <!-- ================================= -->
-    <!-- 📞 CHAMADOS -->
-    <!-- ================================= -->
-
-    <section class="panel glass">
-
-      <div class="panel-header">
-        <h3>📞 Chamados em atenção</h3>
-      </div>
-
-      <div class="call-form">
-
-        <input
-          type="text"
-          id="callNumber"
-          placeholder="Número chamado"
-        />
-
-        <input
-          type="text"
-          id="callDescription"
-          placeholder="Descrição"
-        />
-
-        <select id="callStatus">
-
-          <option>Em andamento</option>
-          <option>Aguardando</option>
-          <option>Em pausa</option>
-          <option>Finalizado</option>
-
-        </select>
-
-        <button class="primary-btn" id="addCallBtn">
-          Adicionar
-        </button>
-
-      </div>
-
-      <div id="callList" class="call-list"></div>
 
     </section>
 
   </main>
 
-  <!-- JS -->
   <script src="script.js"></script>
 
 </body>
