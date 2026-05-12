@@ -4,16 +4,27 @@
 <head>
 
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>🌌 Jupiter</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    🌌 Jupiter
+  </title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 
   <!-- FONT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
@@ -30,46 +41,69 @@
 
 <body>
 
+  <!-- ================================= -->
   <!-- SIDEBAR -->
+  <!-- ================================= -->
+
   <aside class="sidebar">
 
     <div class="logo">
+
       🌌 Jupiter
+
     </div>
 
     <nav>
 
       <button class="menu active">
+
         <i class="fa-solid fa-house"></i>
+
         Dashboard
+
       </button>
 
       <button class="menu">
+
         <i class="fa-solid fa-list-check"></i>
+
         Tarefas
+
       </button>
 
       <button class="menu">
+
         <i class="fa-solid fa-calendar"></i>
+
         Agenda
+
       </button>
 
     </nav>
 
   </aside>
 
+  <!-- ================================= -->
   <!-- MAIN -->
+  <!-- ================================= -->
+
   <main class="main">
 
-    <!-- TOP -->
+    <!-- TOPBAR -->
     <header class="topbar">
 
       <div>
 
-        <h1>Dashboard Operacional</h1>
+        <h1>
+
+          Dashboard Operacional
+
+        </h1>
 
         <p>
-          Gerenciamento de tarefas
+
+          Gerenciamento de tarefas e produtividade
+
         </p>
 
       </div>
@@ -82,116 +116,69 @@
 
     </header>
 
+    <!-- ================================= -->
     <!-- KPI -->
+    <!-- ================================= -->
+
     <section class="kpis">
 
       <div class="kpi-card">
 
-        <span>Total</span>
+        <span>
+          Total
+        </span>
 
         <h2 id="kpiTotal">
+
           0
+
         </h2>
 
       </div>
 
       <div class="kpi-card">
 
-        <span>Concluídas</span>
+        <span>
+          Concluídas
+        </span>
 
         <h2 id="kpiDone">
+
           0
+
         </h2>
 
       </div>
 
       <div class="kpi-card">
 
-        <span>Pendentes</span>
+        <span>
+          Pendentes
+        </span>
 
         <h2 id="kpiPending">
+
           0
+
         </h2>
 
       </div>
 
     </section>
 
-    <!-- GRID -->
+    <!-- ================================= -->
+    <!-- TAREFAS -->
+    <!-- ================================= -->
+
     <section class="grid">
-      <!-- AGENDA -->
-<section class="calendar-section">
-
-  <div class="card">
-
-    <div class="calendar-top">
-
-      <button id="prevMonth">
-        ←
-      </button>
-
-      <h2 id="monthTitle">
-        Maio 2026
-      </h2>
-
-      <button id="nextMonth">
-        →
-      </button>
-
-    </div>
-
-    <div class="calendar-weekdays">
-
-      <div>Dom</div>
-      <div>Seg</div>
-      <div>Ter</div>
-      <div>Qua</div>
-      <div>Qui</div>
-      <div>Sex</div>
-      <div>Sáb</div>
-
-    </div>
-
-    <div
-      class="calendar-grid"
-      id="calendarGrid"
-    ></div>
-
-  </div>
-
-  <!-- EVENTOS -->
-  <div class="card">
-
-    <h3>
-      📌 Eventos do dia
-    </h3>
-
-    <input
-      type="text"
-      id="eventTitle"
-      placeholder="Título do evento"
-    >
-
-    <textarea
-      id="eventDescription"
-      placeholder="Descrição"
-    ></textarea>
-
-    <button id="addEventBtn">
-      Adicionar evento
-    </button>
-
-    <div id="eventList"></div>
-
-  </div>
-
-</section>
 
       <!-- FORM -->
       <div class="card">
 
         <h3>
+
           📝 Nova tarefa
+
         </h3>
 
         <input
@@ -208,15 +195,21 @@
         <select id="taskStatus">
 
           <option>
+
             Em andamento
+
           </option>
 
           <option>
+
             Pausado
+
           </option>
 
           <option>
+
             Concluído
+
           </option>
 
         </select>
@@ -229,13 +222,15 @@
 
       </div>
 
-      <!-- TASKS -->
+      <!-- TASK LIST -->
       <div class="card">
 
         <div class="task-header">
 
           <h3>
+
             📋 Tarefas
+
           </h3>
 
           <input
@@ -247,6 +242,90 @@
         </div>
 
         <div id="taskList"></div>
+
+      </div>
+
+    </section>
+
+    <!-- ================================= -->
+    <!-- CALENDÁRIO -->
+    <!-- ================================= -->
+
+    <section class="calendar-section">
+
+      <!-- CALENDÁRIO -->
+      <div class="card">
+
+        <div class="calendar-top">
+
+          <button id="prevMonth">
+
+            ←
+
+          </button>
+
+          <h2 id="monthTitle">
+
+            Maio 2026
+
+          </h2>
+
+          <button id="nextMonth">
+
+            →
+
+          </button>
+
+        </div>
+
+        <!-- DIAS -->
+        <div class="calendar-weekdays">
+
+          <div>Dom</div>
+          <div>Seg</div>
+          <div>Ter</div>
+          <div>Qua</div>
+          <div>Qui</div>
+          <div>Sex</div>
+          <div>Sáb</div>
+
+        </div>
+
+        <!-- GRID -->
+        <div
+          class="calendar-grid"
+          id="calendarGrid"
+        ></div>
+
+      </div>
+
+      <!-- EVENTOS -->
+      <div class="card">
+
+        <h3>
+
+          📌 Eventos do dia
+
+        </h3>
+
+        <input
+          type="text"
+          id="eventTitle"
+          placeholder="Título do evento"
+        >
+
+        <textarea
+          id="eventDescription"
+          placeholder="Descrição"
+        ></textarea>
+
+        <button id="addEventBtn">
+
+          Adicionar evento
+
+        </button>
+
+        <div id="eventList"></div>
 
       </div>
 
