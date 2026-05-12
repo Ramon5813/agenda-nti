@@ -1,19 +1,20 @@
-// ======================================
-// 🌌 JUPITER CORE
-// ======================================
+/* ================================= */
+/* STORAGE */
+/* ================================= */
 
-// STORAGE
-const STORAGE_KEY = "jupiter.tasks";
-
-// ARRAY
 let tasks =
   JSON.parse(
-    localStorage.getItem(STORAGE_KEY)
+    localStorage.getItem("tasks")
   ) || [];
 
-// ======================================
-// ELEMENTOS
-// ======================================
+let events =
+  JSON.parse(
+    localStorage.getItem("events")
+  ) || [];
+
+/* ================================= */
+/* ELEMENTOS */
+/* ================================= */
 
 const taskTitle =
   document.getElementById("taskTitle");
@@ -33,7 +34,6 @@ const taskList =
 const searchInput =
   document.getElementById("searchInput");
 
-// KPI
 const kpiTotal =
   document.getElementById("kpiTotal");
 
@@ -43,162 +43,69 @@ const kpiDone =
 const kpiPending =
   document.getElementById("kpiPending");
 
-// ======================================
-// SAVE
-// ======================================
+/* ================================= */
+/* CALENDÁRIO */
+/* ================================= */
 
-function saveTasks() {
+const calendarGrid =
+  document.getElementById("calendarGrid");
+
+const monthTitle =
+  document.getElementById("monthTitle");
+
+const prevMonth =
+  document.getElementById("prevMonth");
+
+const nextMonth =
+  document.getElementById("nextMonth");
+
+const eventTitle =
+  document.getElementById("eventTitle");
+
+const eventDescription =
+  document.getElementById("eventDescription");
+
+const addEventBtn =
+  document.getElementById("addEventBtn");
+
+const eventList =
+  document.getElementById("eventList");
+
+/* ================================= */
+/* DATA */
+/* ================================= */
+
+let currentDate =
+  new Date();
+
+let selectedDate =
+  new Date();
+
+/* ================================= */
+/* SAVE */
+/* ================================= */
+
+function saveTasks(){
 
   localStorage.setItem(
-    STORAGE_KEY,
+    "tasks",
     JSON.stringify(tasks)
   );
 
 }
 
-// ======================================
-// STATUS STYLE
-// ======================================
+function saveEvents(){
 
-function getStatusClass(status) {
-
-  switch(status){
-
-    case "Concluído":
-      return "status-done";
-
-    case "Pausado":
-      return "status-pause";
-
-    default:
-      return "status-progress";
-
-  }
+  localStorage.setItem(
+    "events",
+    JSON.stringify(events)
+  );
 
 }
 
-// ======================================
-// ADD TASK
-// ======================================
-
-function addTask() {
-
-  const title =
-    taskTitle.value.trim();
-
-  const description =
-    taskDescription.value.trim();
-
-  const status =
-    taskStatus.value;
-
-  if(!title){
-
-    alert("Digite um título.");
-    return;
-
-  }
-
-  const task = {
-
-    id: Date.now(),
-
-    title,
-    description,
-    status,
-
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-  tasks.unshift(task);
-
-  saveTasks();
-
-  renderTasks();
-
-  updateKPIs();
-
-  clearForm();
-
-}
-
-// ======================================
-// CLEAR FORM
-// ======================================
-
-function clearForm(){
-
-  taskTitle.value = "";
-  taskDescription.value = "";
-
-  taskStatus.value =
-    "Em andamento";
-
-}
-
-// ======================================
-// DELETE TASK
-// ======================================
-
-function deleteTask(id){
-
-  tasks =
-    tasks.filter(
-      task => task.id !== id
-    );
-
-  saveTasks();
-
-  renderTasks();
-
-  updateKPIs();
-
-}
-
-// ======================================
-// CHANGE STATUS
-// ======================================
-
-function changeStatus(id){
-
-  const task =
-    tasks.find(
-      task => task.id === id
-    );
-
-  if(!task) return;
-
-  if(task.status === "Em andamento"){
-
-    task.status = "Pausado";
-
-  }
-
-  else if(task.status === "Pausado"){
-
-    task.status = "Concluído";
-
-  }
-
-  else {
-
-    task.status = "Em andamento";
-
-  }
-
-  saveTasks();
-
-  renderTasks();
-
-  updateKPIs();
-
-}
-
-// ======================================
-// RENDER TASKS
-// ======================================
+/* ================================= */
+/* TASKS */
+/* ================================= */
 
 function renderTasks(){
 
@@ -207,79 +114,67 @@ function renderTasks(){
   const search =
     searchInput.value.toLowerCase();
 
-  const filteredTasks =
-    tasks.filter(task => {
+  const filtered =
+    tasks.filter(task =>
 
-      return (
+      task.title
+        .toLowerCase()
+        .includes(search)
 
-        task.title
-          .toLowerCase()
-          .includes(search)
+    );
 
-        ||
-
-        task.description
-          .toLowerCase()
-          .includes(search)
-
-      );
-
-    });
-
-  if(filteredTasks.length === 0){
-
-    taskList.innerHTML = `
-      <p style="
-        color:#94a3b8;
-      ">
-        Nenhuma tarefa encontrada.
-      </p>
-    `;
-
-    return;
-
-  }
-
-  filteredTasks.forEach(task => {
+  filtered.forEach(task => {
 
     const div =
       document.createElement("div");
 
     div.className = "task";
 
+    let statusClass =
+      "status-progress";
+
+    if(task.status === "Pausado"){
+
+      statusClass = "status-pause";
+
+    }
+
+    if(task.status === "Concluído"){
+
+      statusClass = "status-done";
+
+    }
+
     div.innerHTML = `
 
       <div class="task-top">
 
         <div class="task-title">
+
           ${task.title}
+
         </div>
 
-        <div class="
-          task-status
-          ${getStatusClass(task.status)}
-        ">
+        <div class="task-status ${statusClass}">
+
           ${task.status}
+
         </div>
 
       </div>
 
       <p>
-        ${task.description || "Sem descrição"}
+
+        ${task.description}
+
       </p>
 
       <div class="task-buttons">
 
-        <button
-          onclick="changeStatus(${task.id})"
-        >
-          Alterar status
-        </button>
+        <button onclick="deleteTask('${task.id}')">
 
-        <button
-          onclick="deleteTask(${task.id})"
-        >
           Excluir
+
         </button>
 
       </div>
@@ -290,43 +185,56 @@ function renderTasks(){
 
   });
 
-}
-
-// ======================================
-// KPIS
-// ======================================
-
-function updateKPIs(){
-
-  const total =
-    tasks.length;
-
-  const done =
-    tasks.filter(
-      task =>
-        task.status === "Concluído"
-    ).length;
-
-  const pending =
-    tasks.filter(
-      task =>
-        task.status !== "Concluído"
-    ).length;
-
-  kpiTotal.textContent =
-    total;
-
-  kpiDone.textContent =
-    done;
-
-  kpiPending.textContent =
-    pending;
+  updateKpis();
 
 }
 
-// ======================================
-// EVENTS
-// ======================================
+function addTask(){
+
+  if(taskTitle.value.trim() === ""){
+
+    return;
+
+  }
+
+  const task = {
+
+    id: Date.now(),
+
+    title:
+      taskTitle.value,
+
+    description:
+      taskDescription.value,
+
+    status:
+      taskStatus.value
+
+  };
+
+  tasks.push(task);
+
+  saveTasks();
+
+  renderTasks();
+
+  taskTitle.value = "";
+  taskDescription.value = "";
+
+}
+
+function deleteTask(id){
+
+  tasks =
+    tasks.filter(
+      task => task.id != id
+    );
+
+  saveTasks();
+
+  renderTasks();
+
+}
 
 addTaskBtn.addEventListener(
   "click",
@@ -338,277 +246,301 @@ searchInput.addEventListener(
   renderTasks
 );
 
-// ======================================
-// INIT
-// ======================================
+/* ================================= */
+/* KPI */
+/* ================================= */
 
-renderTasks();
+function updateKpis(){
 
-updateKPIs();
-// =====================================
-// MENU / PAGES
-// =====================================
+  kpiTotal.innerText =
+    tasks.length;
 
-const menuButtons =
-  document.querySelectorAll(".menu");
+  const done =
+    tasks.filter(
+      task =>
+        task.status ===
+        "Concluído"
+    ).length;
 
-const pages =
-  document.querySelectorAll(".page");
+  kpiDone.innerText =
+    done;
 
-menuButtons.forEach(button => {
+  kpiPending.innerText =
+    tasks.length - done;
 
-  button.addEventListener("click", () => {
+}
 
-    // REMOVE ACTIVE MENU
-    menuButtons.forEach(btn => {
-      btn.classList.remove("active");
-    });
+/* ================================= */
+/* CALENDÁRIO */
+/* ================================= */
 
-    // ADD ACTIVE MENU
-    button.classList.add("active");
+function renderCalendar(){
 
-    // PAGE ID
-    const pageId =
-      button.dataset.page;
+  calendarGrid.innerHTML = "";
 
-    // HIDE PAGES
-    pages.forEach(page => {
-      page.classList.remove("active-page");
-    });
+  const year =
+    currentDate.getFullYear();
 
-    // SHOW PAGE
-    document
-      .getElementById(pageId)
-      .classList
-      .add("active-page");
+  const month =
+    currentDate.getMonth();
+
+  const firstDay =
+    new Date(
+      year,
+      month,
+      1
+    ).getDay();
+
+  const daysInMonth =
+    new Date(
+      year,
+      month + 1,
+      0
+    ).getDate();
+
+  const months = [
+
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro"
+
+  ];
+
+  monthTitle.innerText =
+    `${months[month]} ${year}`;
+
+  for(let i = 0; i < firstDay; i++){
+
+    const empty =
+      document.createElement("div");
+
+    calendarGrid.appendChild(empty);
+
+  }
+
+  for(let day = 1; day <= daysInMonth; day++){
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "calendar-day";
+
+    const fullDate =
+      `${year}-${month+1}-${day}`;
+
+    div.innerHTML = `
+
+      <div class="calendar-day-number">
+
+        ${day}
+
+      </div>
+
+    `;
+
+    const hasEvent =
+      events.some(
+        event =>
+          event.date === fullDate
+      );
+
+    if(hasEvent){
+
+      const dot =
+        document.createElement("div");
+
+      dot.className =
+        "calendar-event-dot";
+
+      div.appendChild(dot);
+
+    }
+
+    div.addEventListener(
+      "click",
+      () => {
+
+        selectedDate =
+          fullDate;
+
+        renderEvents();
+
+        document
+          .querySelectorAll(
+            ".calendar-day"
+          )
+          .forEach(day => {
+
+            day.classList.remove(
+              "active-day"
+            );
+
+          });
+
+        div.classList.add(
+          "active-day"
+        );
+
+      }
+    );
+
+    calendarGrid.appendChild(div);
+
+  }
+
+}
+
+prevMonth.addEventListener(
+  "click",
+  () => {
+
+    currentDate.setMonth(
+      currentDate.getMonth() - 1
+    );
+
+    renderCalendar();
+
+  }
+);
+
+nextMonth.addEventListener(
+  "click",
+  () => {
+
+    currentDate.setMonth(
+      currentDate.getMonth() + 1
+    );
+
+    renderCalendar();
+
+  }
+);
+
+/* ================================= */
+/* EVENTOS */
+/* ================================= */
+
+function renderEvents(){
+
+  eventList.innerHTML = "";
+
+  const filtered =
+    events.filter(
+      event =>
+        event.date === selectedDate
+    );
+
+  filtered.forEach(event => {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "event-card";
+
+    div.innerHTML = `
+
+      <h4>
+
+        ${event.title}
+
+      </h4>
+
+      <p>
+
+        ${event.description}
+
+      </p>
+
+      <button
+        onclick="deleteEvent('${event.id}')"
+      >
+
+        Excluir
+
+      </button>
+
+    `;
+
+    eventList.appendChild(div);
 
   });
 
-});
+}
 
-/* ================================= */
-/* CALENDAR */
-/* ================================= */
+function addEvent(){
 
-.calendar-section {
+  if(
+    eventTitle.value.trim() === ""
+  ){
 
-  display: grid;
+    return;
 
-  grid-template-columns: 2fr 1fr;
+  }
 
-  gap: 20px;
+  const event = {
 
-  margin-top: 25px;
+    id: Date.now(),
+
+    title:
+      eventTitle.value,
+
+    description:
+      eventDescription.value,
+
+    date:
+      selectedDate
+
+  };
+
+  events.push(event);
+
+  saveEvents();
+
+  renderEvents();
+
+  renderCalendar();
+
+  eventTitle.value = "";
+  eventDescription.value = "";
 
 }
 
-.calendar-top {
+function deleteEvent(id){
 
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: center;
-
-  margin-bottom: 20px;
-
-}
-
-.calendar-top button {
-
-  width: 45px;
-  height: 45px;
-
-  border: none;
-
-  border-radius: 12px;
-
-  cursor: pointer;
-
-  background:
-    linear-gradient(
-      135deg,
-      #3b82f6,
-      #8b5cf6
+  events =
+    events.filter(
+      event =>
+        event.id != id
     );
 
-  color: white;
+  saveEvents();
 
-  font-size: 18px;
+  renderEvents();
 
-}
-
-.calendar-weekdays {
-
-  display: grid;
-
-  grid-template-columns: repeat(7,1fr);
-
-  gap: 10px;
-
-  margin-bottom: 10px;
+  renderCalendar();
 
 }
 
-.calendar-weekdays div {
-
-  text-align: center;
-
-  color: #94a3b8;
-
-  font-size: 14px;
-
-}
-
-.calendar-grid {
-
-  display: grid;
-
-  grid-template-columns: repeat(7,1fr);
-
-  gap: 10px;
-
-}
-
-.calendar-day {
-
-  min-height: 100px;
-
-  background: rgba(255,255,255,0.03);
-
-  border: 1px solid rgba(255,255,255,0.08);
-
-  border-radius: 16px;
-
-  padding: 10px;
-
-  cursor: pointer;
-
-  transition: 0.25s;
-
-  position: relative;
-
-}
-
-.calendar-day:hover {
-
-  transform: translateY(-2px);
-
-  background: rgba(255,255,255,0.06);
-
-}
-
-.calendar-day-number {
-
-  font-size: 14px;
-
-  color: #94a3b8;
-
-}
-
-.calendar-day.active-day {
-
-  border:
-    2px solid #3b82f6;
-
-}
-
-.calendar-event-dot {
-
-  width: 8px;
-  height: 8px;
-
-  border-radius: 999px;
-
-  background: #8b5cf6;
-
-  margin-top: 6px;
-
-}
+addEventBtn.addEventListener(
+  "click",
+  addEvent
+);
 
 /* ================================= */
-/* EVENTS */
+/* INIT */
 /* ================================= */
 
-#eventList {
+renderTasks();
 
-  margin-top: 20px;
-
-}
-
-.event-card {
-
-  background: rgba(255,255,255,0.04);
-
-  border: 1px solid rgba(255,255,255,0.08);
-
-  border-radius: 16px;
-
-  padding: 15px;
-
-  margin-bottom: 15px;
-
-}
-
-.event-card h4 {
-
-  margin-bottom: 8px;
-
-}
-
-.event-card p {
-
-  color: #94a3b8;
-
-  margin-bottom: 10px;
-
-}
-
-.event-card button {
-
-  border: none;
-
-  padding: 10px 14px;
-
-  border-radius: 10px;
-
-  cursor: pointer;
-
-  background:
-    rgba(255,255,255,0.08);
-
-  color: white;
-
-}
-
-/* ================================= */
-/* RESPONSIVO */
-/* ================================= */
-
-@media(max-width: 1100px){
-
-  .calendar-section {
-
-    grid-template-columns: 1fr;
-
-  }
-
-}
-
-@media(max-width: 700px){
-
-  .calendar-grid {
-
-    gap: 6px;
-
-  }
-
-  .calendar-day {
-
-    min-height: 80px;
-
-    padding: 6px;
-
-  }
-
-}
+renderCalendar();
