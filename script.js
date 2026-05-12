@@ -17,69 +17,91 @@ let events =
 /* ================================= */
 
 const taskTitle =
-  document.getElementById("taskTitle");
+  document.querySelector("#taskTitle");
 
 const taskDescription =
-  document.getElementById("taskDescription");
+  document.querySelector("#taskDescription");
 
 const taskStatus =
-  document.getElementById("taskStatus");
+  document.querySelector("#taskStatus");
 
 const addTaskBtn =
-  document.getElementById("addTaskBtn");
+  document.querySelector("#addTaskBtn");
 
 const taskList =
-  document.getElementById("taskList");
+  document.querySelector("#taskList");
 
 const searchInput =
-  document.getElementById("searchInput");
+  document.querySelector("#searchInput");
 
 const kpiTotal =
-  document.getElementById("kpiTotal");
+  document.querySelector("#kpiTotal");
 
 const kpiDone =
-  document.getElementById("kpiDone");
+  document.querySelector("#kpiDone");
 
 const kpiPending =
-  document.getElementById("kpiPending");
+  document.querySelector("#kpiPending");
 
 /* ================================= */
 /* CALENDÁRIO */
 /* ================================= */
 
 const calendarGrid =
-  document.getElementById("calendarGrid");
+  document.querySelector("#calendarGrid");
 
 const monthTitle =
-  document.getElementById("monthTitle");
+  document.querySelector("#monthTitle");
 
 const prevMonth =
-  document.getElementById("prevMonth");
+  document.querySelector("#prevMonth");
 
 const nextMonth =
-  document.getElementById("nextMonth");
+  document.querySelector("#nextMonth");
 
 const eventTitle =
-  document.getElementById("eventTitle");
+  document.querySelector("#eventTitle");
 
 const eventDescription =
-  document.getElementById("eventDescription");
+  document.querySelector("#eventDescription");
 
 const addEventBtn =
-  document.getElementById("addEventBtn");
+  document.querySelector("#addEventBtn");
 
 const eventList =
-  document.getElementById("eventList");
+  document.querySelector("#eventList");
 
 /* ================================= */
 /* DATA */
 /* ================================= */
 
-let currentDate =
-  new Date();
+let currentDate = new Date();
 
 let selectedDate =
-  new Date();
+  formatDate(new Date());
+
+/* ================================= */
+/* FORMAT DATE */
+/* ================================= */
+
+function formatDate(date){
+
+  const year =
+    date.getFullYear();
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(2,"0");
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(2,"0");
+
+  return `${year}-${month}-${day}`;
+
+}
 
 /* ================================= */
 /* SAVE */
@@ -135,13 +157,15 @@ function renderTasks(){
 
     if(task.status === "Pausado"){
 
-      statusClass = "status-pause";
+      statusClass =
+        "status-pause";
 
     }
 
     if(task.status === "Concluído"){
 
-      statusClass = "status-done";
+      statusClass =
+        "status-done";
 
     }
 
@@ -171,7 +195,7 @@ function renderTasks(){
 
       <div class="task-buttons">
 
-        <button onclick="deleteTask('${task.id}')">
+        <button onclick="deleteTask(${task.id})">
 
           Excluir
 
@@ -191,7 +215,9 @@ function renderTasks(){
 
 function addTask(){
 
-  if(taskTitle.value.trim() === ""){
+  if(
+    taskTitle.value.trim() === ""
+  ){
 
     return;
 
@@ -219,6 +245,7 @@ function addTask(){
   renderTasks();
 
   taskTitle.value = "";
+
   taskDescription.value = "";
 
 }
@@ -227,7 +254,7 @@ function deleteTask(id){
 
   tasks =
     tasks.filter(
-      task => task.id != id
+      task => task.id !== id
     );
 
   saveTasks();
@@ -256,10 +283,11 @@ function updateKpis(){
     tasks.length;
 
   const done =
-    tasks.filter(
-      task =>
-        task.status ===
-        "Concluído"
+    tasks.filter(task =>
+
+      task.status ===
+      "Concluído"
+
     ).length;
 
   kpiDone.innerText =
@@ -318,7 +346,13 @@ function renderCalendar(){
   monthTitle.innerText =
     `${months[month]} ${year}`;
 
-  for(let i = 0; i < firstDay; i++){
+  /* ESPAÇOS VAZIOS */
+
+  for(
+    let i = 0;
+    i < firstDay;
+    i++
+  ){
 
     const empty =
       document.createElement("div");
@@ -327,7 +361,13 @@ function renderCalendar(){
 
   }
 
-  for(let day = 1; day <= daysInMonth; day++){
+  /* DIAS */
+
+  for(
+    let day = 1;
+    day <= daysInMonth;
+    day++
+  ){
 
     const div =
       document.createElement("div");
@@ -335,8 +375,8 @@ function renderCalendar(){
     div.className =
       "calendar-day";
 
-    const fullDate =
-      `${year}-${month+1}-${day}`;
+    const dateString =
+      `${year}-${String(month + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
 
     div.innerHTML = `
 
@@ -348,10 +388,12 @@ function renderCalendar(){
 
     `;
 
+    /* EVENTOS */
+
     const hasEvent =
       events.some(
         event =>
-          event.date === fullDate
+          event.date === dateString
       );
 
     if(hasEvent){
@@ -366,30 +408,30 @@ function renderCalendar(){
 
     }
 
+    /* DIA ATIVO */
+
+    if(
+      selectedDate === dateString
+    ){
+
+      div.classList.add(
+        "active-day"
+      );
+
+    }
+
+    /* CLICK */
+
     div.addEventListener(
       "click",
       () => {
 
         selectedDate =
-          fullDate;
+          dateString;
+
+        renderCalendar();
 
         renderEvents();
-
-        document
-          .querySelectorAll(
-            ".calendar-day"
-          )
-          .forEach(day => {
-
-            day.classList.remove(
-              "active-day"
-            );
-
-          });
-
-        div.classList.add(
-          "active-day"
-        );
 
       }
     );
@@ -399,6 +441,10 @@ function renderCalendar(){
   }
 
 }
+
+/* ================================= */
+/* TROCAR MÊS */
+/* ================================= */
 
 prevMonth.addEventListener(
   "click",
@@ -462,9 +508,7 @@ function renderEvents(){
 
       </p>
 
-      <button
-        onclick="deleteEvent('${event.id}')"
-      >
+      <button onclick="deleteEvent(${event.id})">
 
         Excluir
 
@@ -507,11 +551,12 @@ function addEvent(){
 
   saveEvents();
 
-  renderEvents();
-
   renderCalendar();
 
+  renderEvents();
+
   eventTitle.value = "";
+
   eventDescription.value = "";
 
 }
@@ -520,15 +565,14 @@ function deleteEvent(id){
 
   events =
     events.filter(
-      event =>
-        event.id != id
+      event => event.id !== id
     );
 
   saveEvents();
 
-  renderEvents();
-
   renderCalendar();
+
+  renderEvents();
 
 }
 
@@ -544,3 +588,5 @@ addEventBtn.addEventListener(
 renderTasks();
 
 renderCalendar();
+
+renderEvents();
