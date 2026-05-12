@@ -1,3 +1,4 @@
+```javascript
 /* ================================= */
 /* STORAGE */
 /* ================================= */
@@ -75,7 +76,8 @@ const eventList =
 /* DATA */
 /* ================================= */
 
-let currentDate = new Date();
+let currentDate =
+  new Date();
 
 let selectedDate =
   formatDate(new Date());
@@ -150,7 +152,8 @@ function renderTasks(){
     const div =
       document.createElement("div");
 
-    div.className = "task";
+    div.className =
+      "task";
 
     let statusClass =
       "status-progress";
@@ -194,6 +197,12 @@ function renderTasks(){
       </p>
 
       <div class="task-buttons">
+
+        <button onclick="editTask(${task.id})">
+
+          Editar
+
+        </button>
 
         <button onclick="deleteTask(${task.id})">
 
@@ -247,6 +256,55 @@ function addTask(){
   taskTitle.value = "";
 
   taskDescription.value = "";
+
+}
+
+function editTask(id){
+
+  const task =
+    tasks.find(
+      task => task.id === id
+    );
+
+  if(!task){
+
+    return;
+
+  }
+
+  const newTitle =
+    prompt(
+      "Editar título:",
+      task.title
+    );
+
+  if(newTitle === null){
+
+    return;
+
+  }
+
+  const newDescription =
+    prompt(
+      "Editar descrição:",
+      task.description
+    );
+
+  if(newDescription === null){
+
+    return;
+
+  }
+
+  task.title =
+    newTitle;
+
+  task.description =
+    newDescription;
+
+  saveTasks();
+
+  renderTasks();
 
 }
 
@@ -346,7 +404,7 @@ function renderCalendar(){
   monthTitle.innerText =
     `${months[month]} ${year}`;
 
-  /* ESPAÇOS VAZIOS */
+  /* ESPAÇOS */
 
   for(
     let i = 0;
@@ -388,7 +446,7 @@ function renderCalendar(){
 
     `;
 
-    /* EVENTOS */
+    /* EVENTO */
 
     const hasEvent =
       events.some(
@@ -508,11 +566,21 @@ function renderEvents(){
 
       </p>
 
-      <button onclick="deleteEvent(${event.id})">
+      <div class="task-buttons">
 
-        Excluir
+        <button onclick="editEvent(${event.id})">
 
-      </button>
+          Editar
+
+        </button>
+
+        <button onclick="deleteEvent(${event.id})">
+
+          Excluir
+
+        </button>
+
+      </div>
 
     `;
 
@@ -561,6 +629,57 @@ function addEvent(){
 
 }
 
+function editEvent(id){
+
+  const event =
+    events.find(
+      event => event.id === id
+    );
+
+  if(!event){
+
+    return;
+
+  }
+
+  const newTitle =
+    prompt(
+      "Editar título:",
+      event.title
+    );
+
+  if(newTitle === null){
+
+    return;
+
+  }
+
+  const newDescription =
+    prompt(
+      "Editar descrição:",
+      event.description
+    );
+
+  if(newDescription === null){
+
+    return;
+
+  }
+
+  event.title =
+    newTitle;
+
+  event.description =
+    newDescription;
+
+  saveEvents();
+
+  renderEvents();
+
+  renderCalendar();
+
+}
+
 function deleteEvent(id){
 
   events =
@@ -590,3 +709,4 @@ renderTasks();
 renderCalendar();
 
 renderEvents();
+```
