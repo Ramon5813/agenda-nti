@@ -119,6 +119,73 @@
 
     <!-- GRID -->
     <section class="grid">
+      <!-- AGENDA -->
+<section class="calendar-section">
+
+  <div class="card">
+
+    <div class="calendar-top">
+
+      <button id="prevMonth">
+        ←
+      </button>
+
+      <h2 id="monthTitle">
+        Maio 2026
+      </h2>
+
+      <button id="nextMonth">
+        →
+      </button>
+
+    </div>
+
+    <div class="calendar-weekdays">
+
+      <div>Dom</div>
+      <div>Seg</div>
+      <div>Ter</div>
+      <div>Qua</div>
+      <div>Qui</div>
+      <div>Sex</div>
+      <div>Sáb</div>
+
+    </div>
+
+    <div
+      class="calendar-grid"
+      id="calendarGrid"
+    ></div>
+
+  </div>
+
+  <!-- EVENTOS -->
+  <div class="card">
+
+    <h3>
+      📌 Eventos do dia
+    </h3>
+
+    <input
+      type="text"
+      id="eventTitle"
+      placeholder="Título do evento"
+    >
+
+    <textarea
+      id="eventDescription"
+      placeholder="Descrição"
+    ></textarea>
+
+    <button id="addEventBtn">
+      Adicionar evento
+    </button>
+
+    <div id="eventList"></div>
+
+  </div>
+
+</section>
 
       <!-- FORM -->
       <div class="card">
