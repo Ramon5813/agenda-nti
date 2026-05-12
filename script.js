@@ -385,3 +385,230 @@ menuButtons.forEach(button => {
   });
 
 });
+
+/* ================================= */
+/* CALENDAR */
+/* ================================= */
+
+.calendar-section {
+
+  display: grid;
+
+  grid-template-columns: 2fr 1fr;
+
+  gap: 20px;
+
+  margin-top: 25px;
+
+}
+
+.calendar-top {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 20px;
+
+}
+
+.calendar-top button {
+
+  width: 45px;
+  height: 45px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3b82f6,
+      #8b5cf6
+    );
+
+  color: white;
+
+  font-size: 18px;
+
+}
+
+.calendar-weekdays {
+
+  display: grid;
+
+  grid-template-columns: repeat(7,1fr);
+
+  gap: 10px;
+
+  margin-bottom: 10px;
+
+}
+
+.calendar-weekdays div {
+
+  text-align: center;
+
+  color: #94a3b8;
+
+  font-size: 14px;
+
+}
+
+.calendar-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(7,1fr);
+
+  gap: 10px;
+
+}
+
+.calendar-day {
+
+  min-height: 100px;
+
+  background: rgba(255,255,255,0.03);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 16px;
+
+  padding: 10px;
+
+  cursor: pointer;
+
+  transition: 0.25s;
+
+  position: relative;
+
+}
+
+.calendar-day:hover {
+
+  transform: translateY(-2px);
+
+  background: rgba(255,255,255,0.06);
+
+}
+
+.calendar-day-number {
+
+  font-size: 14px;
+
+  color: #94a3b8;
+
+}
+
+.calendar-day.active-day {
+
+  border:
+    2px solid #3b82f6;
+
+}
+
+.calendar-event-dot {
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 999px;
+
+  background: #8b5cf6;
+
+  margin-top: 6px;
+
+}
+
+/* ================================= */
+/* EVENTS */
+/* ================================= */
+
+#eventList {
+
+  margin-top: 20px;
+
+}
+
+.event-card {
+
+  background: rgba(255,255,255,0.04);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 16px;
+
+  padding: 15px;
+
+  margin-bottom: 15px;
+
+}
+
+.event-card h4 {
+
+  margin-bottom: 8px;
+
+}
+
+.event-card p {
+
+  color: #94a3b8;
+
+  margin-bottom: 10px;
+
+}
+
+.event-card button {
+
+  border: none;
+
+  padding: 10px 14px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  color: white;
+
+}
+
+/* ================================= */
+/* RESPONSIVO */
+/* ================================= */
+
+@media(max-width: 1100px){
+
+  .calendar-section {
+
+    grid-template-columns: 1fr;
+
+  }
+
+}
+
+@media(max-width: 700px){
+
+  .calendar-grid {
+
+    gap: 6px;
+
+  }
+
+  .calendar-day {
+
+    min-height: 80px;
+
+    padding: 6px;
+
+  }
+
+}
